@@ -1,0 +1,60 @@
+<div class="ingredients-page">
+  <header class="ingredients-header">
+    <div class="title">
+      <h2>Ingredientes</h2>
+      <p>Gerencie seu estoque de ingredientes.</p>
+    </div>
+    <div class="actions">
+      <button class="btn-add" type="button" (click)="openForm()">
+        <i class="bi bi-plus-lg"></i>
+        Adicionar Ingrediente
+      </button>
+      <div class="search">
+        <i class="bi bi-search"></i>
+        <input [(ngModel)]="filter"
+               placeholder="Buscar..."
+               (input)="applyFilter()" />
+      </div>
+    </div>
+  </header>
+
+  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+  <div *ngIf="showForm" class="ingredient-form-container">
+    <form class="form-group" [formGroup]="form" (ngSubmit)="submit()">
+      <input formControlName="name" placeholder="Nome" />
+      <input formControlName="unit" placeholder="Unidade (kg, un)" />
+      <input formControlName="cost" type="number" placeholder="Custo" />
+      <input formControlName="stock" type="number" placeholder="Estoque" />
+      <div class="ingredient-form-buttons">
+        <button id="cancel-bttn" type="button" (click)="cancel()">Cancelar</button>
+        <button id="criar-bttn" type="submit">{{ editingId ? 'Salvar' : 'Criar' }}</button>
+      </div>
+    </form>
+  </div>
+  <table *ngIf="filtered.length" class="ingr-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Unidade</th>
+        <th>Custo</th>
+        <th>Estoque</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let i of filtered">
+        <td>{{ i.name }}</td>
+        <td>{{ i.unit }}</td>
+        <td>R$ {{ i.cost.toFixed(2) }}</td>
+        <td>{{ i.stock }}</td>
+        <td>
+          <button type="button" class="icon-btn" (click)="edit(i)" title="Editar"><i class="bi bi-pencil"></i></button>
+          <button type="button" class="icon-btn" (click)="remove(i._id!)" title="Excluir"><i class="bi bi-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!filtered.length" class="no-data">
+    Nenhum ingrediente encontrado.
+  </div>
+</div>

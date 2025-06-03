@@ -1,0 +1,153 @@
+.ingredients-page {
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background: #fef5ec;
+  color: #5a3e36;
+}
+
+.ingredients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.ingredients-header .title h2 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.ingredients-header .title p {
+  margin: 0.3rem 0 0;
+  color: #7a6a60;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-add {
+  background: #ff7b3e;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-add i {
+  font-size: 1.2rem;
+}
+
+.search {
+  position: relative;
+}
+
+.search i {
+  position: absolute;
+  top: 50%;
+  left: 0.8rem;
+  transform: translateY(-50%);
+  color: #7a6a60;
+}
+
+.search input {
+  padding: 0.6rem 0.6rem 0.6rem 2.5rem;
+  border-radius: 2rem;
+  border: 1px solid #ddd;
+  width: 200px;
+  outline: none;
+}
+
+.ingr-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+
+.ingr-table th,
+.ingr-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f0eae2;
+}
+
+.ingr-table thead {
+  background: #f8f0e8;
+}
+
+.ingr-table tbody tr:hover {
+  background: #faf5f2;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #5a3e36;
+  font-size: 1.2rem;
+}
+
+.ingredient-form-container {
+  background: #fff;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ingredient-form-container input,
+.ingredient-form-container select {
+  flex: 1 1 150px;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 0.3rem;
+  margin-right: 30px;
+  margin-bottom: 10px;
+}
+
+.ingredient-form-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ingredient-form-buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+#cancel-bttn {
+  background: #bbb;
+  color: #fff;
+}
+
+#criar-bttn {
+  background: #ff7b3e;
+  color: #fff;
+}
+
+.loading,
+.no-data {
+  text-align: center;
+  color: #7a6a60;
+  margin: 2rem 0;
+}
+
+.error {
+  color: red;
+  margin: 1rem 0;
+}

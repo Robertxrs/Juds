@@ -1,0 +1,98 @@
+<div class="sales-container">
+  <h2>Registrar Nova Venda</h2>
+
+  <form [formGroup]="saleForm" (ngSubmit)="onSubmit()">
+    <div formArrayName="items">
+      <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+        <div class="item-row">
+          <select formControlName="product" (change)="onProductSelected(i)" aria-label="Selecione o Produto">
+            <option value="">Selecione um produto</option>
+            <option *ngFor="let p of products" [value]="p.id" [disabled]="p.stock <= 0">
+              {{ p.name }} (Estoque: {{ p.stock }})
+            </option>
+          </select>
+
+          <input type="number"
+                formControlName="quantity"
+                min="1"
+                [max]="getMaxQuantity(i)"
+                (input)="updateSubtotal(i)"
+                aria-label="Quantidade">
+
+          <span>Preço: {{ item.get('price')?.value | currency:'BRL' }}</span>
+          <span>Subtotal: {{ item.get('subtotal')?.value | currency:'BRL' }}</span>
+
+          <button type="button" (click)="removeProduct(i)">Remover</button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" (click)="addProduct()">+ Adicionar Produto</button>
+
+    <div class="total-section">
+      <h3>Total: {{ saleForm.get('total')?.value | currency:'BRL' }}</h3>
+    </div>
+
+    <div class="payment-method">
+      <label>
+        Forma de Pagamento:
+        <select formControlName="paymentMethod" aria-label="Forma de pagamento">
+          <option value="">Selecione</option>
+          <option value="Dinheiro">Dinheiro</option>
+          <option value="Cartão">Cartão</option>
+          <option value="Pix">Pix</option>
+        </select>
+      </label>
+
+      <div *ngIf="saleForm.get('paymentMethod')?.value === 'Dinheiro'">
+        <label>
+          Valor Recebido:
+          <input type="number" formControlName="cashReceived" (input)="calculateChange()" aria-label="Valor recebido em dinheiro">
+        </label>
+        <span>Troco: {{ saleForm.get('change')?.value | currency:'BRL' }}</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="saleForm.invalid">Confirmar Venda</button>
+      <button type="button" (click)="saleForm.reset()">Cancelar</button>
+    </div>
+  </form>
+
+  <h2>Histórico de Vendas</h2>
+  <div class="sales-history">
+    <div *ngIf="salesHistory.length === 0" class="no-sales">
+      Nenhuma venda registrada ainda
+    </div>
+
+    <div *ngFor="let sale of salesHistory" class="sale-item">
+      <div class="sale-header">
+        <div class="sale-info">
+          <span class="sale-date">{{ sale.date | date:'dd/MM/yyyy HH:mm' }}</span>
+          <span class="payment-method">
+            {{ sale.paymentMethod }}
+            <span *ngIf="sale.paymentMethod === 'Dinheiro'" class="change-info">
+              (Troco: {{ sale.change | currency:'BRL' }})
+            </span>
+          </span>
+        </div>
+        <span class="sale-total">{{ sale.total | currency:'BRL' }}</span>
+      </div>
+
+      <div class="items-list">
+        <div class="item-header">
+          <span>Produto</span>
+          <span>Qtd</span>
+          <span>Unitário</span>
+          <span>Total</span>
+        </div>
+        <div *ngFor="let item of sale.items" class="sale-product">
+          <span class="product-name">{{ item.product.name }}</span>
+          <span class="product-qty">× {{ item.quantity }}</span>
+          <span class="product-price">{{ item.price | currency:'BRL' }}</span>
+          <span class="product-subtotal">{{ item.price * item.quantity | currency:'BRL' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

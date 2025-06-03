@@ -1,0 +1,7 @@
+<div class="dashboard-container">
+  <div class="card" *ngFor="let card of cards" [routerLink]="card.path">
+    <h2>{{ card.title }}</h2>
+    <p>{{ card.description }}</p>
+
+  </div>
+</div>

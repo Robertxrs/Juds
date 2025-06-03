@@ -1,0 +1,114 @@
+<div class="products-page">
+  <header class="products-header">
+    <div class="title">
+      <h2>Produtos</h2>
+      <p>Gerencie seu catálogo de produtos.</p>
+    </div>
+    <div class="actions">
+      <button class="btn-add" type="button" (click)="openForm()">
+        <i class="bi bi-plus-lg"></i>
+        {{ editingId ? 'Cancelar Edição' : 'Adicionar Produto' }}
+      </button>
+      <div class="search">
+        <i class="bi bi-search"></i>
+        <input [(ngModel)]="filter"
+               placeholder="Buscar..."
+               (input)="applyFilter()" />
+      </div>
+    </div>
+  </header>
+
+  <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+
+  <div *ngIf="showForm" class="form-container">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <input formControlName="name"   placeholder="Nome" required />
+      <input formControlName="price"  type="number" placeholder="Preço" required />
+      <input formControlName="stock"  type="number" placeholder="Estoque" required />
+      <select formControlName="status" required aria-label="status">
+        <option value="Ativo">Ativo</option>
+        <option value="Inativo">Inativo</option>
+      </select>
+
+      <h4>Ingredientes</h4>
+        <div formArrayName="ingredients" class="ing-list">
+          <div *ngFor="let ingCtrl of ingArray.controls; let i=index"
+              [formGroupName]="i" class="ing-entry">
+            <select formControlName="ingredient" aria-label="ingredientes">
+              <option [ngValue]="null">-- Novo ingrediente --</option>
+              <option *ngFor="let ing of allIngredients"
+                      [ngValue]="ing._id">{{ ing.name }}</option>
+            </select>
+            <div *ngIf="ingArray.at(i).get('ingredient')!.invalid && ingArray.at(i).get('ingredient')!.touched"
+              class="error">
+            Selecione um ingrediente ou marque “Novo ingrediente”.
+          </div>
+            <input formControlName="ingredientName" placeholder="Nome (se novo)" />
+            <input formControlName="unit" placeholder="Unidade" required />
+            <input formControlName="amount" type="number" placeholder="Qtde" required />
+            <button type="button" (click)="removeIngredient(i)">❌</button>
+          </div>
+        </div>
+      <button id="bttn-ing" type="button" (click)="addIngredient()">+ Incluir Ingrediente</button>
+
+      <div class="form-buttons">
+        <button type="button" (click)="cancel()">Cancelar</button>
+        <button type="submit">{{ editingId ? 'Salvar' : 'Criar' }}</button>
+      </div>
+    </form>
+  </div>
+
+  <table *ngIf="!loading && filtered.length" class="prod-table">
+    <thead>
+      <tr>
+        <th>ID</th><th>Nome</th><th>Preço</th><th>Estoque</th><th>Status</th><th>Ingr.</th><th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of filtered">
+        <td>{{ p.id }}</td>
+        <td>{{ p.name }}</td>
+        <td>R$ {{ p.price.toFixed(2) }}</td>
+        <td>{{ p.stock }}</td>
+        <td><span class="status" [class.active]="p.status==='Ativo'">{{ p.status }}</span></td>
+        <td>
+          {{ p.ingredients?.length || 0 }}
+        </td>
+        <td class="actions-cell">
+        <button type="button"
+          class="icon-btn"
+          (click)="viewIngredients(p)"
+          title="Ver Ingredientes">
+          <i class="bi bi-eye"></i>
+        </button>
+        <button
+            type="button"
+            class="icon-btn"
+            (click)="openForm(p)"
+            title="Editar">
+            <i class="bi bi-pencil"></i>
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            (click)="delete(p.id!)"
+            title="Excluir">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tbody>
+  </table>
+
+  <div *ngIf="!loading && !filtered.length" class="no-data">
+    Nenhum produto cadastrado.
+  </div>
+  <div *ngIf="selectedProduct" class="detail-panel">
+      <h3>Ingredientes de {{ selectedProduct.name }}</h3>
+      <button class="close-btn" (click)="closeView()">✖</button>
+      <ul>
+    <li *ngFor="let e of selectedProduct.ingredients">
+      {{ getIngredientName(e) }} — {{ e.amount }} {{ e.unit }}
+    </li>
+    </ul>
+  </div>
+</div>

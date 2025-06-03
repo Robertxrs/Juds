@@ -1,0 +1,77 @@
+<div class="dashboard-container">
+  <p-card class="dashboard-card">
+     <div class="header">
+      <h2><i class="pi pi-chart-line"></i> Análise Financeira</h2>
+      <div class="period-selector">
+
+        <p-button
+          label="Semanal"
+          (click)="changePeriod('week')"
+          [styleClass]="selectedPeriod !== 'week' ? 'p-button-outlined' : ''">
+        </p-button>
+
+        <p-button
+          label="Mensal"
+          (click)="changePeriod('month')"
+          [styleClass]="selectedPeriod !== 'month' ? 'p-button-outlined' : ''">
+        </p-button>
+      </div>
+    </div>
+
+    <div class="metrics-row">
+      <p-card class="metric-card">
+        <div class="metric-value">{{ totalRevenue | currency:'BRL':'symbol':'1.2-2' }}</div>
+        <div class="metric-label">Receita Total</div>
+      </p-card>
+
+      <p-card class="metric-card">
+        <div class="metric-value">{{ totalCost | currency:'BRL':'symbol':'1.2-2' }}</div>
+        <div class="metric-label">Custo Ingredientes</div>
+      </p-card>
+
+      <p-card class="metric-card profit">
+        <div class="metric-value">{{ profit | currency:'BRL':'symbol':'1.2-2' }}</div>
+        <div class="metric-label">Lucro</div>
+      </p-card>
+    </div>
+
+    <div class="chart-container">
+      <apx-chart
+        [series]="chartOptions.series"
+        [chart]="chartOptions.chart"
+        [xaxis]="chartOptions.xaxis"
+        [yaxis]="chartOptions.yaxis"
+        [colors]="chartOptions.colors"
+        [stroke]="chartOptions.stroke"
+        [dataLabels]="chartOptions.dataLabels"
+        [legend]="chartOptions.legend"
+        [tooltip]="chartOptions.tooltip">
+      </apx-chart>
+    </div>
+
+    <div class="data-table">
+      <p-table [value]="financialData" [paginator]="true" [rows]="5">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Período</th>
+            <th>Receita</th>
+            <th>Custo</th>
+            <th>Lucro</th>
+            <th>Margem (%)</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+          <tr>
+            <td>{{ item.period }}</td>
+            <td>{{ item.revenue | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td>{{ item.cost    | currency:'BRL':'symbol':'1.2-2' }}</td>
+            <td [ngClass]="{'positive': item.profit > 0, 'negative': item.profit < 0}">
+              {{ item.profit | currency:'BRL':'symbol':'1.2-2' }}
+            </td>
+            <td>{{ item.margin }}%</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </p-card>
+</div>
