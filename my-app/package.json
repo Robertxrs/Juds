@@ -4,7 +4,6 @@
   "main": "electron/main.js",
   "build": {
     "asar": false,
-    "asarUnpack": ["**/backend/**"],
     "appId": "com.app.juds",
     "productName": "Juds",
     "directories": {

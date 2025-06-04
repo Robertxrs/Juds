@@ -15,7 +15,6 @@ mongoose.connect('mongodb://localhost:27017/myapp', {
   useUnifiedTopology: true,
 });
 
-
 const Ingredient = require(path.join(__dirname, 'models', 'ingredient'));
 const Product = require(path.join(__dirname, 'models', 'product'));
 const Sale = require(path.join(__dirname, 'models', 'sale'));
@@ -30,11 +29,7 @@ async function startMongoDB() {
       });
       console.log('Conectado ao MongoDB local');
     } else {
-      mongod = await MongoMemoryServer.create({
-    instance: {
-      storageEngine: 'wiredTiger',
-      dbPath: './mongo-data'
-    }});
+      mongod = await MongoMemoryServer.create();
       const uri = mongod.getUri();
       await mongoose.connect(uri, {
         useNewUrlParser: true,
