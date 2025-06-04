@@ -1,5 +1,5 @@
 
-![dashboard](https://github.com/user-attachments/assets/0bf24d0a-2985-4c88-ac92-9aef34b95167)
+![image](https://github.com/user-attachments/assets/e9bff5d0-d53f-46ab-9177-95604e0edd27)
 
 
 ﻿<h1>JUDS - Sistema de Gestão de Estoque e Vendas</h1>
